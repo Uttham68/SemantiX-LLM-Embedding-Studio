@@ -1,0 +1,4 @@
+Classifier Head,Test Accuracy,Macro Precision,Macro Recall,Macro F1-Score,Paraphrase Generalization Acc,Train Time (s)
+Logistic Regression,0.98,0.98,0.98,0.98,1.0,0.1674
+Linear SVM,0.96,0.9605,0.96,0.9598,0.96,0.4207
+Random Forest,0.964,0.9639,0.964,0.9638,1.0,1.6348

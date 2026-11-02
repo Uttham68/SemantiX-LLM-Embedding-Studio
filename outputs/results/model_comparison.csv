@@ -1,0 +1,4 @@
+Representation Model,Vector Dim,Test Accuracy,Test Macro F1,Paraphrase Generalization Acc,Clustering Silhouette,Clustering ARI,Clustering NMI,Encoding Time (s)
+TF-IDF (Lexical Baseline),1500,0.948,0.9483,0.96,0.0311,0.6026,0.6942,0.54
+paraphrase-MiniLM-L3-v2 (3-Layer LLM),384,0.952,0.9518,1.0,0.0909,0.8518,0.8214,39.08
+all-MiniLM-L6-v2 (6-Layer LLM),384,0.98,0.98,1.0,0.1134,0.9028,0.8754,176.4

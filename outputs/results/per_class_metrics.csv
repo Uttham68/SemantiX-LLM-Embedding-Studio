@@ -1,0 +1,6 @@
+Category,Precision,Recall,F1-Score,Support
+Sports,1.0,1.0,1.0,50
+Technology,0.98,0.98,0.98,50
+Finance,0.9796,0.96,0.9697,50
+Politics,0.96,0.96,0.96,50
+Healthcare,0.9804,1.0,0.9901,50

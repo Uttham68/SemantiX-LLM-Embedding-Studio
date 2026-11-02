@@ -1,0 +1,6 @@
+category,documents,avg_words,median_words,avg_chars
+Finance,200,172.4,180.0,1010.1
+Healthcare,200,114.7,115.5,673.0
+Politics,200,173.8,180.0,1007.4
+Sports,200,164.7,180.0,926.3
+Technology,200,167.8,180.0,977.7

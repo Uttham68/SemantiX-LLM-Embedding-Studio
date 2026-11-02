@@ -1,0 +1,7 @@
+Text A,Text B,Relationship,Shared Keywords,TF-IDF Cosine Sim,LLM Embedding Sim,Expected Behavior
+Artificial intelligence is transforming healthcare.,Machine learning is improving medical diagnosis.,Related (Paraphrase: AI in Healthcare),0,0.0,0.5829,High (>0.60)
+Artificial intelligence is transforming healthcare.,India won the cricket championship.,Unrelated (Healthcare AI vs. Cricket),0,0.0,0.0616,Low (<0.15)
+Machine learning is improving medical diagnosis.,India won the cricket championship.,Unrelated (Medical ML vs. Cricket),0,0.0,0.07,Low (<0.15)
+India won the cricket championship.,The national cricket team celebrated their tournament victory.,Related (Paraphrase: Cricket Victory),1,0.1473,0.6876,High (>0.65)
+The stock market recorded a significant increase.,Equity indices surged as corporate earnings beat expectations.,Related (Paraphrase: Stock Market Surge),0,0.0,0.5248,High (>0.55)
+India won the cricket championship.,The stock market recorded a significant increase.,Unrelated (Cricket vs. Stock Market),0,0.0,0.1221,Low (<0.15)

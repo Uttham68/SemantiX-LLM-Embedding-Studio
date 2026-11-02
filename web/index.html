@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SemantiX — Pretrained LLM Embedding Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <!-- Interactive Cursor-Illuminated Architectural Graphics Canvas -->
+  <canvas id="cursor-illumination-canvas"></canvas>
+  <div class="bg-mesh"></div>
+  <div class="bg-orb orb-gold"></div>
+  <div class="bg-orb orb-emerald"></div>
+  <div class="bg-orb orb-bronze"></div>
+
+  <!-- Global Header -->
+  <header class="top-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-icon" title="384-Dimensional Transformer Bi-Encoder">
+          <span class="brand-icon-inner">🧠</span>
+          <span class="brand-icon-ring"></span>
+        </div>
+        <div>
+          <div class="brand-badge-row">
+            <span class="brand-badge">GENAI COURSE PROJECT • TOPIC #10</span>
+            <span class="brand-pill-tag">100% Offline Ready</span>
+          </div>
+          <h1 class="brand-title">SemantiX <span class="gradient-text">LLM Embedding Studio</span></h1>
+          <p class="brand-subtitle">Text Classification, Clustering &amp; Topic Modeling Using Pretrained Transformer Embeddings</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="engine-status" title="Active Pretrained Transformer Bi-Encoder">
+          <span class="pulse-dot"></span>
+          <div>
+            <div class="status-label">ACTIVE BI-ENCODER</div>
+            <div class="status-value">all-MiniLM-L6-v2 <span class="dim-pill">384D</span></div>
+          </div>
+        </div>
+
+        <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" title="Toggle Pitch Black / Daylight Theme">
+          <span class="theme-icon" id="theme-icon">✨</span>
+          <span class="theme-label" id="theme-label">Pitch Black</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="container main-content">
+    <!-- 5-Column Bento KPI Telemetry Strip -->
+    <section class="kpi-grid" id="kpi-strip">
+      <div class="kpi-card spotlight-card" style="--i: 0; --kpi-accent: #10B981;">
+        <div class="kpi-top">
+          <span class="kpi-label">Benchmark Corpus</span>
+          <span class="kpi-badge-mono">5 DOMAINS</span>
+        </div>
+        <strong class="kpi-value" id="kpi-docs">1,000 Docs</strong>
+        <span class="kpi-sub">100% Deduplicated • Balanced</span>
+      </div>
+
+      <div class="kpi-card spotlight-card" style="--i: 1; --kpi-accent: #14B8A6;">
+        <div class="kpi-top">
+          <span class="kpi-label">Vector Geometry</span>
+          <span class="kpi-badge-mono">‖e‖₂ = 1.0</span>
+        </div>
+        <strong class="kpi-value">384D Sphere</strong>
+        <span class="kpi-sub">Mean Pooling + Unit L2 Norm</span>
+      </div>
+
+      <div class="kpi-card spotlight-card" style="--i: 2; --kpi-accent: #EAB308;">
+        <div class="kpi-top">
+          <span class="kpi-label">Classification Acc.</span>
+          <span class="kpi-badge-mono">TEST N=250</span>
+        </div>
+        <strong class="kpi-value" id="kpi-acc">98.0%</strong>
+        <span class="kpi-sub" id="kpi-f1">Macro F1: 0.9800</span>
+      </div>
+
+      <div class="kpi-card spotlight-card" style="--i: 3; --kpi-accent: #F97316;">
+        <div class="kpi-top">
+          <span class="kpi-label">Clustering NMI</span>
+          <span class="kpi-badge-mono">K-MEANS K=5</span>
+        </div>
+        <strong class="kpi-value" id="kpi-nmi">0.8754</strong>
+        <span class="kpi-sub" id="kpi-ari">ARI: 0.9028 (K=5)</span>
+      </div>
+
+      <div class="kpi-card spotlight-card" style="--i: 4; --kpi-accent: #F43F5E;">
+        <div class="kpi-top">
+          <span class="kpi-label">Topic Diversity</span>
+          <span class="kpi-badge-mono">c-TF-IDF</span>
+        </div>
+        <strong class="kpi-value" id="kpi-div">100.0%</strong>
+        <span class="kpi-sub" id="kpi-div-sub">Cluster c-TF-IDF</span>
+      </div>
+    </section>
+
+    <!-- Sticky Frosted Floating Dock Navigation Tab Bar -->
+    <div class="tab-dock-sticky">
+      <nav class="tab-nav" id="main-tab-nav" role="tablist">
+        <div class="tab-glider" id="tab-glider"></div>
+        <button class="tab-btn active" data-tab="tab-classify">
+          <span class="tab-emoji">🎯</span>
+          <span>1. Live Classification &amp; Search</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-similarity">
+          <span class="tab-emoji">🔗</span>
+          <span>2. Semantic vs. Lexical Lab</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-clustering">
+          <span class="tab-emoji">🌌</span>
+          <span>3. 2D Semantic Galaxy</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-topics">
+          <span class="tab-emoji">🧭</span>
+          <span>4. Topic Discovery &amp; Sandbox</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-benchmarks">
+          <span class="tab-emoji">📊</span>
+          <span>5. Benchmarks &amp; Visual Gallery</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- TAB 1: LIVE TEXT CLASSIFICATION & SEMANTIC SEARCH STUDIO         -->
+    <!-- ================================================================ -->
+    <section class="tab-panel active" id="tab-classify">
+      <div class="panel-grid two-col">
+        <!-- Input & Controls Card -->
+        <div class="glass-card spotlight-card">
+          <div class="card-header">
+            <div class="card-title-row">
+              <span class="module-pill">MODULE 1 • SUPERVISED CLASSIFICATION</span>
+            </div>
+            <h2>🎯 Live Semantic Text Classification</h2>
+            <p>Enter any news headline, paragraph, or custom sentence. The pretrained Transformer converts your text into a <code>384D</code> semantic vector and predicts its category with calibrated confidence.</p>
+          </div>
+
+          <div class="preset-group">
+            <span class="preset-title">Quick Test Sample Pills:</span>
+            <div class="chip-row">
+              <button class="chip domain-chip-sports" data-sample="India defeated Australia in the final match.">🏏 Sports Demo</button>
+              <button class="chip domain-chip-tech" data-sample="New artificial intelligence technology was released.">🤖 Tech Demo</button>
+              <button class="chip domain-chip-finance" data-sample="The stock market recorded a significant increase.">📈 Finance Demo</button>
+              <button class="chip domain-chip-health" data-sample="Machine learning is improving medical diagnosis and clinical radiology screening.">🩺 Healthcare AI</button>
+              <button class="chip domain-chip-politics" data-sample="Parliamentary lawmakers debated constitutional legislation and national budget policy.">🏛️ Politics Demo</button>
+              <button class="chip domain-chip-tech" data-sample="NASA launched a new space telescope to study distant exoplanets and spiral galaxies.">🚀 Space / NASA</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="label-with-btn">
+              <label for="classify-input">Input Text to Analyze:</label>
+              <button type="button" id="btn-random-classify" class="random-inline-btn" title="Insert a random test sentence and classify">
+                <span class="dice-icon">🎲</span> Random Text
+              </button>
+            </div>
+            <div class="textarea-wrapper">
+              <textarea id="classify-input" rows="4" placeholder="Type or paste any sentence or paragraph here...">India defeated Australia in the final match.</textarea>
+              <span class="char-token-badge" id="char-token-counter">44 chars • ~9 tokens</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label for="classifier-select">Classifier Head (on 384D Embeddings):</label>
+              <div class="select-wrapper">
+                <select id="classifier-select">
+                  <option value="Logistic Regression">Logistic Regression (Test Acc: 98.0%)</option>
+                  <option value="Linear SVM">Calibrated Linear SVM (Test Acc: 98.0%)</option>
+                  <option value="Random Forest">Random Forest (Test Acc: 96.4%)</option>
+                </select>
+              </div>
+            </div>
+            <button id="btn-run-classify" class="primary-btn cta-shimmer">
+              <span class="btn-spinner hidden" id="classify-spinner"></span>
+              <span id="classify-btn-text">⚡ Classify &amp; Search Corpus</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Prediction Telemetry Card -->
+        <div class="glass-card spotlight-card" id="classify-telemetry-card">
+          <div class="card-header">
+            <div class="card-title-row">
+              <span class="module-pill accent-emerald">REAL-TIME TELEMETRY</span>
+            </div>
+            <h2>📡 Calibrated Prediction &amp; Confidence</h2>
+            <p>Softmax probability distribution across all 5 semantic domains.</p>
+          </div>
+
+          <div class="prediction-hero" id="pred-hero-box" data-domain="Sports">
+            <div>
+              <span class="pred-caption" id="pred-status-badge">PREDICTED DOMAIN CATEGORY</span>
+              <div class="pred-category-row">
+                <span class="domain-dot" id="pred-domain-dot"></span>
+                <div class="pred-category" id="pred-category-text">Sports</div>
+              </div>
+            </div>
+            <div class="pred-stats">
+              <div class="stat-pill">
+                <span>Confidence</span>
+                <strong id="pred-conf-text">96.4%</strong>
+              </div>
+              <div class="stat-pill">
+                <span>Latency</span>
+                <strong id="pred-time-text">⚡ 11.2 ms</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="prob-bars-container" id="prob-bars"></div>
+
+          <button type="button" id="btn-jump-galaxy" class="galaxy-jump-btn">
+            <span>🌌 Plot This Query as a Live Star (⭐) in 2D Semantic Galaxy</span>
+            <span class="jump-arrow">→</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Top-4 Nearest Corpus Neighbors -->
+      <div class="glass-card spotlight-card mt-20">
+        <div class="card-header">
+          <div class="card-title-row">
+            <span class="module-pill accent-emerald">COSINE VECTOR RETRIEVAL • 1,000 DOCS</span>
+          </div>
+          <h2>🔎 Top-4 Semantically Similar Documents in Corpus (Cosine Nearest Neighbors)</h2>
+          <p>Retrieved via dot-product search over 1,000 deduplicated L2-normalized <code>384D</code> document vectors. Hover any card to expand full text.</p>
+        </div>
+        <div class="neighbors-grid" id="nearest-docs-grid"></div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TAB 2: SEMANTIC VS. LEXICAL SIMILARITY LAB                       -->
+    <!-- ================================================================ -->
+    <section class="tab-panel" id="tab-similarity">
+      <div class="glass-card spotlight-card">
+        <div class="cluster-toolbar">
+          <div>
+            <div class="card-title-row">
+              <span class="module-pill">MODULE 2 • SEMANTIC VS. LEXICAL LAB</span>
+            </div>
+            <h2>🔗 3-Way Comparative Semantic vs. Lexical (TF-IDF) Lab</h2>
+            <p>Enter <strong>any 3 sentences in any order</strong>. Watch how lexical TF-IDF fails (<code>0.0000</code>) when paraphrases share zero words, while <code>all-MiniLM-L6-v2</code> captures deep semantic equivalence.</p>
+          </div>
+          <div class="toolbar-controls">
+            <button type="button" id="btn-rand-triplet" class="random-inline-btn">
+              <span class="dice-icon">🎲</span> Random Smart Triplet (A, B, C)
+            </button>
+            <button id="btn-run-similarity" class="primary-btn cta-shimmer">
+              <span class="btn-spinner hidden" id="sim-spinner"></span>
+              <span>🔬 Compute Pairwise Similarity</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="preset-group">
+          <span class="preset-title">Curated Benchmark Triplets:</span>
+          <div class="chip-row">
+            <button class="chip sim-pack"
+              data-a="Artificial intelligence is transforming healthcare."
+              data-b="Machine learning is improving medical diagnosis."
+              data-c="India won the cricket championship.">
+              🩺 Pack 1: Healthcare AI vs. Cricket (Prompt Default)
+            </button>
+            <button class="chip sim-pack"
+              data-a="Neural network algorithms have drastically boosted machine comprehension of human speech and text."
+              data-b="The government announced new fiscal stimulus measures to control rising retail inflation."
+              data-c="The development of deep learning architectures has significantly improved automated natural language understanding.">
+              🧠 Pack 2: Deep Learning (A &amp; C Related, B Unrelated)
+            </button>
+            <button class="chip sim-pack"
+              data-a="The stock market recorded a significant increase."
+              data-b="Equity indices surged as corporate earnings beat expectations."
+              data-c="The striker scored a decisive goal in the football championship final.">
+              💹 Pack 3: Stock Market Paraphrase vs. Football
+            </button>
+          </div>
+        </div>
+
+        <!-- 3-Column Comparative Input Card Layout -->
+        <div class="sim-three-col-grid">
+          <div class="sim-input-card sim-card-a">
+            <div class="sim-card-top">
+              <span class="sim-role-badge badge-anchor-a">ANCHOR A</span>
+              <button type="button" id="btn-rand-a" class="random-inline-btn"><span class="dice-icon">🎲</span> Random A</button>
+            </div>
+            <label for="sim-a" class="sr-only">Text A</label>
+            <input type="text" id="sim-a" value="Artificial intelligence is transforming healthcare." />
+          </div>
+
+          <div class="sim-input-card sim-card-b">
+            <div class="sim-card-top">
+              <span class="sim-role-badge badge-comp-b">COMPARISON B</span>
+              <button type="button" id="btn-rand-b" class="random-inline-btn"><span class="dice-icon">🎲</span> Random B</button>
+            </div>
+            <label for="sim-b" class="sr-only">Text B</label>
+            <input type="text" id="sim-b" value="Machine learning is improving medical diagnosis." />
+          </div>
+
+          <div class="sim-input-card sim-card-c">
+            <div class="sim-card-top">
+              <span class="sim-role-badge badge-comp-c">COMPARISON C</span>
+              <button type="button" id="btn-rand-c" class="random-inline-btn"><span class="dice-icon">🎲</span> Random C</button>
+            </div>
+            <label for="sim-c" class="sr-only">Text C</label>
+            <input type="text" id="sim-c" value="India won the cricket championship." />
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Dual Progress Gauges + 384D Vector Triangle -->
+      <div class="panel-grid two-col mt-20">
+        <div class="glass-card spotlight-card">
+          <div class="card-header">
+            <div class="card-title-row">
+              <span class="module-pill accent-emerald">DUAL PROGRESS GAUGES &amp; SEMANTIC GAIN</span>
+            </div>
+            <h2>⚡ Lexical TF-IDF vs. Pretrained LLM Cosine Gauges</h2>
+            <p>Side-by-side comparison showing exact Semantic Gain (<code>Δ = cos_LLM - cos_TFIDF</code>).</p>
+          </div>
+          <div class="best-pair-banner" id="sim-best-banner"></div>
+          <div id="sim-dual-gauges" class="sim-gauges-list"></div>
+        </div>
+
+        <div class="glass-card spotlight-card">
+          <div class="card-header">
+            <div class="card-title-row">
+              <span class="module-pill">384D COSINE TRIANGLE</span>
+            </div>
+            <h2>📐 Vector Space Geometry (A, B, C)</h2>
+            <p>Visualizes pairwise cosine proximity in <code>384D</code> space with live energy pulse along the strongest link.</p>
+          </div>
+          <div class="canvas-wrapper triangle-box">
+            <canvas id="sim-triangle-canvas" width="500" height="310"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Similarity Comparison Table -->
+      <div class="glass-card spotlight-card mt-20">
+        <div class="card-header">
+          <h2>📊 Dynamic Pairwise Comparison Telemetry Table</h2>
+        </div>
+        <div class="table-responsive">
+          <table class="modern-table" id="sim-results-table">
+            <thead>
+              <tr>
+                <th>Sentence Pair</th>
+                <th>Shared Keywords</th>
+                <th class="num-col">TF-IDF Similarity</th>
+                <th class="num-col">LLM Cosine Sim</th>
+                <th class="num-col">Semantic Gain (Δ)</th>
+                <th>Dynamic Semantic Verdict</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TAB 3: 2D SEMANTIC GALAXY EXPLORER (CLUSTERING)                  -->
+    <!-- ================================================================ -->
+    <section class="tab-panel" id="tab-clustering">
+      <div class="glass-card spotlight-card">
+        <div class="cluster-toolbar">
+          <div>
+            <div class="card-title-row">
+              <span class="module-pill">MODULE 3 • UNSUPERVISED CLUSTERING &amp; MANIFOLD PROJECTION</span>
+            </div>
+            <h2>🌌 Interactive 2D Semantic Galaxy (t-SNE &amp; PCA)</h2>
+            <p>All 1,000 unlabeled documents projected from <code>384D</code> to <code>2D</code>. Switch projections to watch smooth 60fps point morphing, or plot any live sentence as a glowing star (⭐).</p>
+          </div>
+          <div class="toolbar-controls">
+            <div class="control-box">
+              <div class="slider-header">
+                <label for="cluster-k-slider">Clusters (K):</label>
+                <span class="k-live-badge" id="k-val-label">5</span>
+              </div>
+              <input type="range" id="cluster-k-slider" min="2" max="10" value="5" />
+            </div>
+            <div class="control-box">
+              <label for="cluster-proj-select">2D Projection Method:</label>
+              <select id="cluster-proj-select">
+                <option value="tsne">t-SNE (Non-Linear Manifold)</option>
+                <option value="pca">PCA (Linear Principal Axes)</option>
+              </select>
+            </div>
+            <div class="control-box">
+              <label for="cluster-color-mode">Color Points By:</label>
+              <select id="cluster-color-mode">
+                <option value="cluster">Unsupervised K-Means Clusters</option>
+                <option value="true">True Ground-Truth Categories</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Compact HUD Telemetry Cards -->
+        <div class="mini-metrics-row">
+          <div class="mini-metric hud-tile">
+            <div>
+              <span class="hud-label">COSINE SILHOUETTE</span>
+              <small class="hud-sub">Cohesion vs. Separation</small>
+            </div>
+            <strong id="clust-sil">0.1134</strong>
+          </div>
+          <div class="mini-metric hud-tile">
+            <div>
+              <span class="hud-label">ADJUSTED RAND INDEX</span>
+              <small class="hud-sub">Pairwise Alignment (ARI)</small>
+            </div>
+            <strong id="clust-ari">0.9028</strong>
+          </div>
+          <div class="mini-metric hud-tile">
+            <div>
+              <span class="hud-label">NORMALIZED MUTUAL INFO</span>
+              <small class="hud-sub">Information Overlap (NMI)</small>
+            </div>
+            <strong id="clust-nmi">0.8754</strong>
+          </div>
+          <div class="mini-metric hud-tile">
+            <div>
+              <span class="hud-label">WCSS INERTIA</span>
+              <small class="hud-sub">Within-Cluster Variance</small>
+            </div>
+            <strong id="clust-inertia">787.09</strong>
+          </div>
+        </div>
+
+        <!-- Live Query Star Locator Bar -->
+        <div class="query-locator-bar">
+          <div class="flex-1">
+            <div class="label-with-btn" style="margin-bottom: 10px;">
+              <label for="galaxy-query-input" class="locator-label">⭐ Live Query Vector Locator (Projects any sentence onto the 2D Manifold with Top-3 Neighbor Beams):</label>
+              <button type="button" id="btn-galaxy-rand" class="random-inline-btn"><span class="dice-icon">🎲</span> Random Text</button>
+            </div>
+            <input type="text" id="galaxy-query-input" value="India defeated Australia in the final match." placeholder="Type any sentence to plot its 2D semantic star position..." />
+          </div>
+          <button type="button" id="btn-galaxy-plot" class="primary-btn cta-shimmer">
+            <span>⭐ Plot Query Star</span>
+          </button>
+        </div>
+
+        <div class="galaxy-layout">
+          <div class="galaxy-canvas-container">
+            <canvas id="galaxy-canvas" width="780" height="470"></canvas>
+            <div id="galaxy-tooltip" class="galaxy-tooltip hidden"></div>
+          </div>
+          <div class="galaxy-sidebar">
+            <h3>Cluster Legend &amp; Filter</h3>
+            <p class="muted-small">Click any group below to isolate its vectors in 2D space:</p>
+            <div id="galaxy-legend" class="legend-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Emergent Cluster Summary Cards -->
+      <div class="glass-card spotlight-card mt-20">
+        <div class="card-header">
+          <h2>🧩 Emergent Cluster Themes &amp; Centroid-Nearest Exemplar Documents</h2>
+        </div>
+        <div class="table-responsive">
+          <table class="modern-table" id="cluster-summary-table">
+            <thead>
+              <tr>
+                <th>Cluster ID</th>
+                <th>Emerging Semantic Theme</th>
+                <th class="num-col">Docs</th>
+                <th class="num-col">Purity (%)</th>
+                <th class="num-col">Centroid Sim</th>
+                <th>Centroid-Nearest Exemplar Document</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TAB 4: TOPIC DISCOVERY & CUSTOM PUBLIC BATCH LAB                 -->
+    <!-- ================================================================ -->
+    <section class="tab-panel" id="tab-topics">
+      <div class="glass-card spotlight-card">
+        <div class="cluster-toolbar">
+          <div>
+            <div class="card-title-row">
+              <span class="module-pill">MODULE 4 • AUTOMATED TOPIC DISCOVERY (c-TF-IDF)</span>
+            </div>
+            <h2>🧭 Unsupervised Topic Modeling &amp; Sub-Topic Hierarchy (3×2 Grid)</h2>
+            <p>Combines <code>384D</code> K-Means clustering with Class-Based TF-IDF (<code>c-TF-IDF</code>) to extract human-interpretable themes, weighted keyword pills, coherence gauges, and centroid exemplars.</p>
+          </div>
+          <div class="toolbar-controls">
+            <div class="control-box">
+              <label for="topic-scope-select">Analysis Scope:</label>
+              <select id="topic-scope-select">
+                <option value="Technology">Technology Sub-Topics</option>
+                <option value="Sports">Sports Sub-Topics</option>
+                <option value="Finance">Finance Sub-Topics</option>
+                <option value="Politics">Politics Sub-Topics</option>
+                <option value="Healthcare">Healthcare Sub-Topics</option>
+                <option value="corpus">Full Corpus (All 1,000 Docs)</option>
+              </select>
+            </div>
+            <div class="control-box">
+              <div class="slider-header">
+                <label for="topic-count-slider">Topics:</label>
+                <span class="k-live-badge" id="topic-count-label">6</span>
+              </div>
+              <input type="range" id="topic-count-slider" min="2" max="6" value="6" />
+            </div>
+          </div>
+        </div>
+
+        <div class="mini-metrics-row">
+          <div class="mini-metric hud-tile">
+            <div>
+              <span class="hud-label">ACTIVE DOMAIN SCOPE</span>
+              <small class="hud-sub">Target Partition</small>
+            </div>
+            <strong id="topic-scope-badge">Technology</strong>
+          </div>
+          <div class="mini-metric hud-tile">
+            <div>
+              <span class="hud-label">TOPIC DIVERSITY SCORE</span>
+              <small class="hud-sub">Unique Top-8 Keywords</small>
+            </div>
+            <strong id="topic-div-score">95.8%</strong>
+          </div>
+          <div class="mini-metric hud-tile">
+            <div>
+              <span class="hud-label">MEAN SEMANTIC COHERENCE</span>
+              <small class="hud-sub">Intra-Topic Centroid Cosine</small>
+            </div>
+            <strong id="topic-coh-score">0.4820</strong>
+          </div>
+        </div>
+
+        <!-- 3x2 Responsive Grid of Topic Cards -->
+        <div class="topics-cards-grid" id="topics-cards-container"></div>
+      </div>
+
+      <!-- Creative Public Feature: Custom Batch Analyzer -->
+      <div class="glass-card spotlight-card mt-20">
+        <div class="card-header">
+          <div class="card-title-row">
+            <span class="module-pill accent-emerald">PUBLIC SANDBOX • DETERMINISTIC AGGLOMERATIVE CLUSTERING</span>
+          </div>
+          <h2>🧪 Interactive Public Sandbox: Analyze Your Own Batch of Texts</h2>
+          <p>Paste 3 or more custom sentences (one per line). Our pretrained LLM (<code>all-MiniLM-L6-v2</code>) will embed every line, classify its domain with inline confidence gauges, and group them into semantic clusters!</p>
+        </div>
+        <div class="panel-grid two-col">
+          <div>
+            <div class="form-group">
+              <div class="label-with-btn">
+                <label for="batch-input">Paste Custom Sentences (One per line):</label>
+                <button type="button" id="btn-rand-batch" class="random-inline-btn">
+                  <span class="dice-icon">🎲</span> Random Batch (5 Domains)
+                </button>
+              </div>
+              <textarea id="batch-input" rows="7">India won the cricket tournament after a thrilling century in the final.
+Deep learning neural networks are accelerating natural language processing.
+The central bank raised interest rates to curb retail inflation and stabilize bonds.
+A last-minute penalty kick secured the European football league trophy.
+Cloud kubernetes clusters and serverless APIs simplify enterprise software scaling.
+Wall Street stock indices rallied following strong quarterly corporate earnings.</textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label for="batch-k-input">Number of Unsupervised Groups (K):</label>
+                <input type="number" id="batch-k-input" min="2" max="6" value="3" />
+              </div>
+              <button id="btn-run-batch" class="primary-btn cta-shimmer">
+                <span class="btn-spinner hidden" id="batch-spinner"></span>
+                <span>🚀 Embed, Classify &amp; Cluster My Texts</span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <div class="table-responsive sandbox-table-wrap">
+              <table class="modern-table sticky-header-table" id="batch-results-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Input Sentence</th>
+                    <th>Predicted Domain</th>
+                    <th>Confidence</th>
+                    <th>Discovered Group</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TAB 5: EXPERIMENTAL BENCHMARKS & VISUAL GALLERY                  -->
+    <!-- ================================================================ -->
+    <section class="tab-panel" id="tab-benchmarks">
+      <div class="glass-card spotlight-card">
+        <div class="card-header">
+          <div class="card-title-row">
+            <span class="module-pill">MODULE 5 • QUANTITATIVE ABLATION &amp; EVALUATION</span>
+          </div>
+          <h2>📊 Experimental Benchmark: Lexical TF-IDF vs. 3-Layer &amp; 6-Layer Pretrained LLMs</h2>
+          <p>Evaluated on the 750/250 Stratified Train/Test Split, 25 Unseen Zero-Overlap Paraphrase Sentences, and 1,000-Doc Unsupervised Clustering.</p>
+        </div>
+        <div class="table-responsive">
+          <table class="modern-table benchmark-table" id="benchmark-model-table">
+            <thead>
+              <tr>
+                <th>Representation Model</th>
+                <th class="num-col">Vector Dim</th>
+                <th class="num-col">Test Accuracy</th>
+                <th class="num-col">Test Macro F1</th>
+                <th class="num-col">Paraphrase Gen. Acc</th>
+                <th class="num-col">Silhouette</th>
+                <th class="num-col">Clustering ARI</th>
+                <th class="num-col">Clustering NMI</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="academic-callout">
+          <div class="callout-icon">🎓</div>
+          <div>
+            <strong>Academic Note on Representation Geometry &amp; Paraphrase Generalization:</strong>
+            On the 100% deduplicated 1,000-document benchmark and 25-sentence zero-overlap Paraphrase Test Set, <code>all-MiniLM-L6-v2</code> (6-layer Transformer bi-encoder, <code>384D</code>) achieves the highest score across <strong>every supervised and unsupervised metric</strong> (<code>98.0%</code> Test Accuracy, <code>100.0%</code> Paraphrase Generalization Accuracy, and <code>0.9028</code> Clustering ARI vs. <code>0.6026</code> for sparse 1,500D TF-IDF).
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card spotlight-card mt-20">
+        <div class="card-header">
+          <div class="card-title-row">
+            <span class="module-pill accent-emerald">HIGH-RESOLUTION FIGURES • FULLSCREEN LIGHTBOX</span>
+          </div>
+          <h2>🖼️ Publication Figure Gallery (All 7 Figures in Sequential Order — Click to Enlarge)</h2>
+          <p>Click any chart below to inspect it in the fullscreen high-resolution Lightbox Modal (press <code>ESC</code> or click backdrop to close).</p>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item" data-img="/figures/fig1_dataset_distribution.png" style="--i: 0;">
+            <div class="gallery-img-wrap">
+              <img src="/figures/fig1_dataset_distribution.png" alt="Dataset Distribution" />
+              <span class="zoom-badge">🔍 Fullscreen Zoom</span>
+            </div>
+            <div class="gallery-cap">Figure 1: Dataset Category Distribution &amp; Word Count Profile</div>
+          </div>
+          <div class="gallery-item" data-img="/figures/fig2_confusion_matrix.png" style="--i: 1;">
+            <div class="gallery-img-wrap">
+              <img src="/figures/fig2_confusion_matrix.png" alt="Confusion Matrix" />
+              <span class="zoom-badge">🔍 Fullscreen Zoom</span>
+            </div>
+            <div class="gallery-cap">Figure 2: Classification Confusion Matrix (Pretrained LLM vs. TF-IDF)</div>
+          </div>
+          <div class="gallery-item" data-img="/figures/fig3_clustering_elbow_silhouette.png" style="--i: 2;">
+            <div class="gallery-img-wrap">
+              <img src="/figures/fig3_clustering_elbow_silhouette.png" alt="Elbow and Silhouette" />
+              <span class="zoom-badge">🔍 Fullscreen Zoom</span>
+            </div>
+            <div class="gallery-cap">Figure 3: K-Means Elbow (WCSS) &amp; Silhouette Optimization (K=2..10)</div>
+          </div>
+          <div class="gallery-item" data-img="/figures/fig4_semantic_space_pca_tsne.png" style="--i: 3;">
+            <div class="gallery-img-wrap">
+              <img src="/figures/fig4_semantic_space_pca_tsne.png" alt="2D t-SNE Semantic Space" />
+              <span class="zoom-badge">🔍 Fullscreen Zoom</span>
+            </div>
+            <div class="gallery-cap">Figure 4: 2D t-SNE Semantic Space (True Categories vs. Unsupervised K-Means)</div>
+          </div>
+          <div class="gallery-item" data-img="/figures/fig5_semantic_similarity_heatmap.png" style="--i: 4;">
+            <div class="gallery-img-wrap">
+              <img src="/figures/fig5_semantic_similarity_heatmap.png" alt="Semantic Similarity Heatmap" />
+              <span class="zoom-badge">🔍 Fullscreen Zoom</span>
+            </div>
+            <div class="gallery-cap">Figure 5: Cosine Similarity Matrix &amp; Paraphrase Benchmark</div>
+          </div>
+          <div class="gallery-item" data-img="/figures/fig6_model_comparison_metrics.png" style="--i: 5;">
+            <div class="gallery-img-wrap">
+              <img src="/figures/fig6_model_comparison_metrics.png" alt="Model Comparison" />
+              <span class="zoom-badge">🔍 Fullscreen Zoom</span>
+            </div>
+            <div class="gallery-cap">Figure 6: Representation &amp; Embedding Model Benchmark</div>
+          </div>
+          <div class="gallery-item" data-img="/figures/fig7_topic_keywords.png" style="--i: 6;">
+            <div class="gallery-img-wrap">
+              <img src="/figures/fig7_topic_keywords.png" alt="Topic Keywords" />
+              <span class="zoom-badge">🔍 Fullscreen Zoom</span>
+            </div>
+            <div class="gallery-cap">Figure 7: Discovered c-TF-IDF Sub-Topic Keyword Weights</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Image Lightbox Modal -->
+  <div id="img-modal" class="modal-backdrop hidden">
+    <div class="modal-content">
+      <button id="modal-close" class="modal-close-btn" title="Close (Esc)">&times;</button>
+      <img id="modal-img" src="" alt="Enlarged Figure" />
+    </div>
+  </div>
+
+  <!-- Interactive Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span><strong>Generative AI Course Project (Topic #10):</strong> Text Classification, Clustering &amp; Topic Modeling Using Pretrained LLM Embeddings</span>
+      <span>Powered by <code>sentence-transformers/all-MiniLM-L6-v2</code> • Press <code>1-5</code> to switch tabs</span>
+    </div>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
