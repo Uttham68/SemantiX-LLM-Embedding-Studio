@@ -36,17 +36,10 @@ _MODEL_REGISTRY: Dict[str, object] = {}
 def load_embedding_model(model_name: str = PRIMARY_MODEL_NAME):
     """
     Loads and caches a SentenceTransformer model in memory.
-    Configured for minimal memory overhead (<180MB RAM) on cloud container runtimes.
     """
     if model_name not in _MODEL_REGISTRY:
-        import torch
-        torch.set_num_threads(1)
-        try:
-            torch.set_num_interop_threads(1)
-        except Exception:
-            pass
         from sentence_transformers import SentenceTransformer
-        print(f"[Module 2] Loading pretrained Transformer model: {model_name} (CPU, 1 thread) ...")
+        print(f"[Module 2] Loading pretrained Transformer model: {model_name} ...")
         model = SentenceTransformer(model_name, device="cpu")
         model.eval()
         _MODEL_REGISTRY[model_name] = model

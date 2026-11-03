@@ -67,11 +67,6 @@ def init_state():
     STATE["projections"] = compute_or_load_2d_projections(
         STATE["emb_bundle"][PRIMARY_MODEL_NAME], force_recompute=False
     )
-    # Warm up bi-encoder model on CPU with single-thread lean memory footprint
-    from src.embeddings import load_embedding_model
-    load_embedding_model(PRIMARY_MODEL_NAME)
-    import gc
-    gc.collect()
 
 
 @app.on_event("startup")
