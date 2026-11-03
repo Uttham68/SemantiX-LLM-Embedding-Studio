@@ -404,9 +404,11 @@ def serve_index():
 
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    host = os.environ.get("HOST", "0.0.0.0")
     print("\n" + "=" * 70)
     print(" SemantiX Public Interactive Web Application")
-    print(" URL: http://localhost:8000")
+    print(f" URL: http://localhost:{port}")
     print(" (Note: Original Streamlit app.py remains untouched for faculty review)")
     print("=" * 70 + "\n")
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host=host, port=port)
