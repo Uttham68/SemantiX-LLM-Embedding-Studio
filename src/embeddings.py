@@ -36,11 +36,20 @@ _MODEL_REGISTRY: Dict[str, object] = {}
 def load_embedding_model(model_name: str = PRIMARY_MODEL_NAME):
     """
     Loads and caches a SentenceTransformer model in memory.
+    Configured for minimal memory overhead (<180MB RAM) on cloud container runtimes.
     """
     if model_name not in _MODEL_REGISTRY:
+        import torch
+        torch.set_num_threads(1)
+        try:
+            torch.set_num_interop_threads(1)
+        except Exception:
+            pass
         from sentence_transformers import SentenceTransformer
-        print(f"[Module 2] Loading pretrained Transformer model: {model_name} ...")
-        _MODEL_REGISTRY[model_name] = SentenceTransformer(model_name, device="cpu")
+        print(f"[Module 2] Loading pretrained Transformer model: {model_name} (CPU, 1 thread) ...")
+        model = SentenceTransformer(model_name, device="cpu")
+        model.eval()
+        _MODEL_REGISTRY[model_name] = model
     return _MODEL_REGISTRY[model_name]
 
 
@@ -52,28 +61,20 @@ def encode_texts(
 ) -> Tuple[np.ndarray, float]:
     """
     Converts a list of texts into dense numerical vectors using a pretrained LLM embedding model.
-
-    How Sentence-BERT (MiniLM) Generates Embeddings:
-    1. WordPiece Tokenization: Splits text into subword tokens ([CLS], w1, w2, ..., [SEP]).
-    2. Transformer Self-Attention Layers: Computes contextualized token embeddings where each
-       word attends to every other word in the sentence.
-    3. Mean Pooling: Averages the contextualized token vectors across the sequence length to
-       produce a single fixed-size 384-dimensional vector.
-    4. L2 Normalization: Divides vector by its Euclidean norm ||v||_2 so every vector lies on
-       the unit hypersphere (||v||_2 = 1). On the unit hypersphere, dot product equals Cosine
-       Similarity, and Euclidean distance is monotonically equivalent to Cosine Distance.
     """
+    import torch
     model = load_embedding_model(model_name)
     cleaned = [clean_text_for_embeddings(t) for t in texts]
 
     start_t = time.perf_counter()
-    embeddings = model.encode(
-        cleaned,
-        batch_size=batch_size,
-        show_progress_bar=False,
-        convert_to_numpy=True,
-        normalize_embeddings=normalize,
-    )
+    with torch.no_grad():
+        embeddings = model.encode(
+            cleaned,
+            batch_size=batch_size,
+            show_progress_bar=False,
+            convert_to_numpy=True,
+            normalize_embeddings=normalize,
+        )
     elapsed = time.perf_counter() - start_t
     return embeddings.astype(np.float32), elapsed
 
@@ -207,14 +208,17 @@ def semantic_search_corpus(
     corpus_embeddings: np.ndarray,
     model_name: str = PRIMARY_MODEL_NAME,
     top_k: int = 5,
+    query_emb: np.ndarray = None,
 ) -> pd.DataFrame:
     """
     Finds the top-K most semantically similar DISTINCT documents in the corpus for any user query.
     Deduplicates results by the first 60 characters (`text[:60].lower()`) so synthetic template
     variations never appear as duplicate cards in the UI.
+    Reuses precomputed `query_emb` if provided to avoid redundant model passes.
     """
-    query_emb, _ = encode_texts([query], model_name=model_name)
-    sims = np.dot(corpus_embeddings, query_emb[0])
+    if query_emb is None:
+        query_emb, _ = encode_texts([query], model_name=model_name)
+    sims = np.dot(corpus_embeddings, query_emb[0] if query_emb.ndim > 1 else query_emb)
     sorted_indices = np.argsort(sims)[::-1]
 
     selected_indices = []

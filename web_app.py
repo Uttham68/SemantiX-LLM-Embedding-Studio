@@ -65,6 +65,11 @@ def init_state():
     STATE["projections"] = compute_or_load_2d_projections(
         STATE["emb_bundle"][PRIMARY_MODEL_NAME], force_recompute=False
     )
+    # Warm up bi-encoder model on CPU with single-thread lean memory footprint
+    from src.embeddings import load_embedding_model
+    load_embedding_model(PRIMARY_MODEL_NAME)
+    import gc
+    gc.collect()
 
 
 @app.on_event("startup")
@@ -128,12 +133,18 @@ def api_classify(req: ClassifyRequest):
         clf_name = "Logistic Regression"
 
     clf_model = bundle["trained_classifiers"][clf_name]
-    pred_res = predict_single_text(text, clf_model, model_name=PRIMARY_MODEL_NAME)
-    nearest_df = semantic_search_corpus(text, df, emb_l6, top_k=4)
+    q_emb, elapsed_sec = encode_texts([text], model_name=PRIMARY_MODEL_NAME)
+    pred_res = predict_single_text(
+        text,
+        clf_model,
+        model_name=PRIMARY_MODEL_NAME,
+        precomputed_emb=q_emb,
+        infer_time_ms=elapsed_sec * 1000,
+    )
+    nearest_df = semantic_search_corpus(text, df, emb_l6, top_k=4, query_emb=q_emb)
 
     # Compute 2D coordinates (t-SNE & PCA) for the live query via temperature-scaled
     # cosine barycentric interpolation over its top-5 nearest corpus neighbors
-    q_emb, _ = encode_texts([text], model_name=PRIMARY_MODEL_NAME)
     sims = np.dot(emb_l6, q_emb[0])
     top5_idx = np.argsort(sims)[::-1][:5]
     top5_sims = sims[top5_idx]
@@ -399,6 +410,7 @@ app.mount("/static", StaticFiles(directory=WEB_DIR), name="static")
 
 
 @app.get("/")
+@app.head("/")
 def serve_index():
     return FileResponse(os.path.join(WEB_DIR, "index.html"))
 

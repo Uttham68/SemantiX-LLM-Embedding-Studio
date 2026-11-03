@@ -165,13 +165,19 @@ def predict_single_text(
     text: str,
     clf,
     model_name: str = PRIMARY_MODEL_NAME,
+    precomputed_emb: np.ndarray = None,
+    infer_time_ms: float = None,
 ) -> Dict[str, object]:
     """
     Predicts the category and calibrated confidence distribution for a single input sentence
     using the pretrained LLM embedding model and trained classifier.
     Flags borderline/OOD predictions when max probability < 45%.
     """
-    emb, infer_t = encode_texts([text], model_name=model_name)
+    if precomputed_emb is not None:
+        emb = precomputed_emb if precomputed_emb.ndim > 1 else precomputed_emb.reshape(1, -1)
+        infer_t = (infer_time_ms / 1000.0) if infer_time_ms is not None else 0.005
+    else:
+        emb, infer_t = encode_texts([text], model_name=model_name)
     pred_label = clf.predict(emb)[0]
 
     if hasattr(clf, "predict_proba"):
