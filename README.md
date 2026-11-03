@@ -1,5 +1,4 @@
 # Text Classification, Clustering, and Topic Modeling Using Embeddings from Pretrained LLMs
-Live Link: https://semantix-llm.onrender.com/
 
 **Polished Academic Title:** *Semantic Text Analysis and Topic Discovery Using Pretrained LLM Embeddings*  
 **Course:** Generative AI Course Project (Topic #10)  
