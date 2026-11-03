@@ -18,10 +18,6 @@ import os
 from typing import Dict, List, Tuple, Set
 import numpy as np
 import pandas as pd
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
@@ -377,6 +373,10 @@ def generate_all_visualizations(
     tech_subtopics: Dict[str, object],
 ) -> Dict[str, str]:
     os.makedirs(FIGURES_DIR, exist_ok=True)
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import seaborn as sns
     sns.set_theme(style="whitegrid", font_scale=1.0)
     saved_paths: Dict[str, str] = {}
 

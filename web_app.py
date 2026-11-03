@@ -41,7 +41,8 @@ from src.topic_visualizer import (
     compute_or_load_2d_projections,
     FIGURES_DIR,
 )
-from run_experiments import PIPELINE_PATH, run_all_experiments
+RESULTS_DIR = os.path.join(BASE_DIR, "outputs", "results")
+PIPELINE_PATH = os.path.join(RESULTS_DIR, "trained_pipeline.joblib")
 
 WEB_DIR = os.path.join(BASE_DIR, "web")
 
@@ -58,6 +59,7 @@ def init_state():
     if STATE:
         return
     if not os.path.exists(PIPELINE_PATH):
+        from run_experiments import run_all_experiments
         run_all_experiments(force_rebuild=False)
     STATE["bundle"] = joblib.load(PIPELINE_PATH)
     STATE["df"] = load_or_create_dataset(force_rebuild=False)
